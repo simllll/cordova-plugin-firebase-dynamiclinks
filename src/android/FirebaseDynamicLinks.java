@@ -96,7 +96,7 @@ public class FirebaseDynamicLinks extends CordovaPlugin implements GoogleApiClie
       JSONObject response = new JSONObject();
       String invitationId = AppInviteReferral.getInvitationId(intent);
 
-      if (invitationId != null) {
+      if (invitationId != null && invitationId != "") {
         response.put("invitationId", invitationId);
       }
 
