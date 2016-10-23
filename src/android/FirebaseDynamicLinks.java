@@ -39,19 +39,18 @@ public class FirebaseDynamicLinks extends CordovaPlugin implements GoogleApiClie
 
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-    if (ACTION_SEND_INVITATION.equals(action)) {
-      sendInvitation(callbackContext, args.getJSONObject(0));
-      return true;
+      if (ACTION_SEND_INVITATION.equals(action)) {
+          sendInvitation(callbackContext, args.getJSONObject(0));
+          return true;
+      } else if (ACTION_GET_INVITATION.equals(action)) {
+          getInvitation(callbackContext);
+          return true;
+      } else if (ACTION_CONVERT_INVITATION.equals(action)) {
+          convertInvitation(callbackContext, args.getString(0));
+          return true;
+      }
 
-    } else if (ACTION_GET_INVITATION.equals(action)) {
-      getInvitation(callbackContext);
-      return true;
-    } else if (ACTION_CONVERT_INVITATION.equals(action)) {
-      convertInvitation(callbackContext, args.getString(0));
-      return true;
-    }
-
-    return false;
+      return false;
   }
 
   @Override
@@ -59,7 +58,7 @@ public class FirebaseDynamicLinks extends CordovaPlugin implements GoogleApiClie
       super.onNewIntent(intent);
 
       if (AppInviteReferral.hasReferral(intent)) {
-        respondWithDeepLink(intent);
+          respondWithDeepLink(intent);
       }
   }
 
@@ -198,28 +197,19 @@ public class FirebaseDynamicLinks extends CordovaPlugin implements GoogleApiClie
   public void onActivityResult(int requestCode, int resultCode, Intent intent) {
     super.onActivityResult(requestCode, resultCode, intent);
 
-    if (_sendInvitationCallbackContext == null) {
-      return;
+    if (_sendInvitationCallbackContext == null || requestCode != REQUEST_INVITE) {
+        return;
     }
 
-    if (requestCode == REQUEST_INVITE) {
-      if (resultCode == RESULT_OK) {
+    if (resultCode == RESULT_OK) {
         final String[] ids = AppInviteInvitation.getInvitationIds(resultCode, intent);
         try {
-          JSONObject response = new JSONObject()
-              .put("count", ids.length)
-              .put("invitationIds", new JSONArray(ids));
-          _sendInvitationCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, response));
+            _sendInvitationCallbackContext.success(new JSONArray(ids));
         } catch (JSONException e) {
-          _sendInvitationCallbackContext.error(e.getMessage());
+            _sendInvitationCallbackContext.error(e.getMessage());
         }
-      } else {
-        if (resultCode == 3) {
-          _sendInvitationCallbackContext.error("Resultcode 3, see http://stackoverflow.com/questions/37883664/result-code-3-when-implementing-appinvites");
-        } else {
-          _sendInvitationCallbackContext.error("Resultcode: " + resultCode);
-        }
-      }
+    } else {
+        _sendInvitationCallbackContext.error("Resultcode: " + resultCode);
     }
   }
 

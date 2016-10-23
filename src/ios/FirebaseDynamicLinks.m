@@ -110,11 +110,7 @@ static FirebaseDynamicLinks *instance;
     if (error) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
     } else {
-        NSDictionary *result = @{
-                                 @"count": @(invitationIds.count),
-                                 @"invitationIds": invitationIds
-                                 };
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:invitationIds];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:_sendInvitationCallbackId];
 }
