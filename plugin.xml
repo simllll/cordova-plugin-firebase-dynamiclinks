@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin
     id="cordova-plugin-firebase-dynamiclinks"
-    version="1.0.1"
+    version="0.9.0"
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -31,14 +31,15 @@
         </config-file>
 
         <preference name="APP_DOMAIN" />
+        <preference name="APP_PATH" />
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="$APP_DOMAIN" android:scheme="http"/>
-                <data android:host="$APP_DOMAIN" android:scheme="https"/>
+                <data android:scheme="http" android:host="$APP_DOMAIN" android:pathPrefix="$APP_PATH"/>
+                <data android:scheme="https" android:host="$APP_DOMAIN" android:pathPrefix="$APP_PATH"/>
             </intent-filter>
         </config-file>
 

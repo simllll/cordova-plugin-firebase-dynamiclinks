@@ -65,8 +65,6 @@
                               completion:^(FIRDynamicLink * _Nullable dynamicLink,
                                            NSError * _Nullable error) {
     // [START_EXCLUDE]
-    AppDelegate *strongSelf = weakSelf;
-
     NSString *matchType = (dynamicLink.matchConfidence == FIRDynamicLinkMatchConfidenceWeak) ? @"Weak" : @"Strong";
     [FirebaseDynamicLinks.instance sendDynamicLinkData:@{
                                      @"deepLink": dynamicLink.url.absoluteString,
