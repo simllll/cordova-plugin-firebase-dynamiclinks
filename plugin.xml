@@ -65,7 +65,6 @@
 
         <pod id="Firebase/Invites" />
         <pod id="Firebase/DynamicLinks" />
-        <pod id="Firebase/Auth" />
         <pod id="GoogleSignIn" />
     </platform>
 

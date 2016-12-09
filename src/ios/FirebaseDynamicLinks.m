@@ -1,23 +1,11 @@
 #import "FirebaseDynamicLinks.h"
 
-@import Firebase;
-@import GoogleSignIn;
-
-
 @implementation FirebaseDynamicLinks {
     id <FIRInviteBuilder> _inviteDialog;
     NSString *_sendInvitationCallbackId;
 }
 
-static FirebaseDynamicLinks *instance;
-
-+ (FirebaseDynamicLinks *) instance {
-    return instance;
-}
-
 - (void)pluginInitialize {
-    NSLog(@"Starting Firebase Invites plugin");
-
     if(![FIRApp defaultApp]) {
         [FIRApp configure];
     }
@@ -25,8 +13,6 @@ static FirebaseDynamicLinks *instance;
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
     [GIDSignIn sharedInstance].uiDelegate = self;
     [GIDSignIn sharedInstance].delegate = self;
-
-    instance = self;
 }
 
 - (void)onDynamicLink:(CDVInvokedUrlCommand *)command {
@@ -84,10 +70,6 @@ static FirebaseDynamicLinks *instance;
         [_inviteDialog setAndroidMinimumVersionCode:[androidMinimumVersion integerValue]];
     }
 
-    [_inviteDialog open];
-}
-
-- (void)signIn:(CDVInvokedUrlCommand *)command {
     self.isSigningIn = YES;
 
     [[GIDSignIn sharedInstance] signIn];
@@ -118,26 +100,29 @@ static FirebaseDynamicLinks *instance;
 
 #pragma mark GIDSignInDelegate
 - (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
-    NSDictionary *message = nil;
     if (error == nil) {
-        GIDAuthentication *authentication = user.authentication;
-        FIRAuthCredential *credential = [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
-                                                                         accessToken:authentication.accessToken];
-        [[FIRAuth auth] signInWithCredential:credential
-                                  completion:^(FIRUser *user, NSError *error) {
-
-                                  }];
+        [_inviteDialog open];
     } else {
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{
-                @"type": @"signinfailure",
-                @"data": @{
-                        @"code": @(error.code),
-                        @"message": error.description
-                }
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
+            @"type": @"signinfailure",
+            @"data": @{
+                    @"code": @(error.code),
+                    @"message": error.description
+            }
         }];
 
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self._sendInvitationCallbackId];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:_sendInvitationCallbackId];
     }
+}
+
+- (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController {
+    self.isSigningIn = YES;
+
+    [self.viewController presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)signIn:(GIDSignIn *)signIn dismissViewController:(UIViewController *)viewController {
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
