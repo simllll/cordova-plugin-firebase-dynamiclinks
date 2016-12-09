@@ -8,7 +8,6 @@
 
 - (void)onDynamicLink:(CDVInvokedUrlCommand *)command;
 - (void)sendInvitation:(CDVInvokedUrlCommand*)command;
-- (void)signIn:(CDVInvokedUrlCommand*)command;
 - (void)sendDynamicLinkData:(NSDictionary*)data;
 
 @property (nonatomic, copy) NSString *dynamicLinkCallbackId;
