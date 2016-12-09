@@ -1,5 +1,8 @@
-#import <GoogleSignIn/GoogleSignIn.h>
 #import "FirebaseDynamicLinks.h"
+
+@import Firebase;
+@import GoogleSignIn;
+
 
 @implementation FirebaseDynamicLinks {
     id <FIRInviteBuilder> _inviteDialog;
@@ -18,6 +21,10 @@ static FirebaseDynamicLinks *instance;
     if(![FIRApp defaultApp]) {
         [FIRApp configure];
     }
+
+    [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
+    [GIDSignIn sharedInstance].uiDelegate = self.viewController;
+    [GIDSignIn sharedInstance].delegate = self;
 
     instance = self;
 }
@@ -80,16 +87,8 @@ static FirebaseDynamicLinks *instance;
     [_inviteDialog open];
 }
 
-- (void)convertInvitation:(CDVInvokedUrlCommand *)command {
-    NSString* invitationId = command.arguments[0];
-
-    if (invitationId) {
-        [FIRInvites convertInvitation:invitationId];
-
-        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
-    } else {
-        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"InvitationId can't be null"] callbackId:command.callbackId];
-    }
+- (void)signIn:(CDVInvokedUrlCommand *)command {
+    [[GIDSignIn sharedInstance] signIn];
 }
 
 - (void)sendDynamicLinkData:(NSDictionary *)data {
@@ -113,6 +112,30 @@ static FirebaseDynamicLinks *instance;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:invitationIds];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:_sendInvitationCallbackId];
+}
+
+#pragma mark GIDSignInDelegate
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    NSDictionary *message = nil;
+    if (error == nil) {
+        GIDAuthentication *authentication = user.authentication;
+        FIRAuthCredential *credential = [FIRGoogleAuthProvider credentialWithIDToken:authentication.idToken
+                                                                         accessToken:authentication.accessToken];
+        [[FIRAuth auth] signInWithCredential:credential
+                                  completion:^(FIRUser *user, NSError *error) {
+
+                                  }];
+    } else {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{
+                @"type": @"signinfailure",
+                @"data": @{
+                        @"code": @(error.code),
+                        @"message": error.description
+                }
+        }];
+
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self._sendInvitationCallbackId];
+    }
 }
 
 @end

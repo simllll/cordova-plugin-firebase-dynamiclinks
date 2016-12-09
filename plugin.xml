@@ -18,8 +18,6 @@
         <merges target="cordova.plugins.firebase.dynamiclinks" />
     </js-module>
 
-    <!-- (At least on iOS) users must be signed in with their Google account in order to be able to send an invite, so include the Google Sign-In plugin -->
-    <dependency id="cordova-plugin-googleplus" url="https://github.com/chemerisuk/cordova-plugin-googleplus"/>
     <dependency id="cordova-plugin-firebase-hooks"/>
 
     <platform name="android">
@@ -56,9 +54,6 @@
             </feature>
         </config-file>
 
-        <preference name="REVERSED_CLIENT_ID" />
-        <preference name="ASSOCIATED_DOMAINS" />
-
         <config-file target="*-Info.plist" parent="NSContactsUsageDescription">
            <string> </string>
         </config-file>
@@ -70,6 +65,8 @@
 
         <pod id="Firebase/Invites" />
         <pod id="Firebase/DynamicLinks" />
+        <pod id="Firebase/Auth" />
+        <pod id="GoogleSignIn" />
     </platform>
 
 </plugin>

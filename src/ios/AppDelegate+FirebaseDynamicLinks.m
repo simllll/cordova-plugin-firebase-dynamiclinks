@@ -10,10 +10,9 @@
 - (BOOL)application:(nonnull UIApplication *)application
             openURL:(nonnull NSURL *)url
             options:(nonnull NSDictionary<NSString *, id> *)options {
-  return [self application:application
-                   openURL:url
-         sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  return [[GIDSignIn sharedInstance] handleURL:url
+             sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -56,10 +55,6 @@
 - (BOOL)application:(UIApplication *)application
     continueUserActivity:(NSUserActivity *)userActivity
       restorationHandler:(void (^)(NSArray *))restorationHandler {
-  // [START_EXCLUDE silent]
-  __weak AppDelegate *weakSelf = self;
-  // [END_EXCLUDE]
-
   BOOL handled = [[FIRDynamicLinks dynamicLinks]
                      handleUniversalLink:userActivity.webpageURL
                               completion:^(FIRDynamicLink * _Nullable dynamicLink,
