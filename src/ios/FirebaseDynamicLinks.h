@@ -12,6 +12,7 @@
 - (void)sendDynamicLinkData:(NSDictionary*)data;
 
 @property (nonatomic, copy) NSString *dynamicLinkCallbackId;
+@property (nonatomic, assign) BOOL isSigningIn;
 @property NSDictionary* cachedInvitation;
 
 @end

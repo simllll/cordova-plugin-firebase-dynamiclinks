@@ -23,7 +23,7 @@ static FirebaseDynamicLinks *instance;
     }
 
     [GIDSignIn sharedInstance].clientID = [FIRApp defaultApp].options.clientID;
-    [GIDSignIn sharedInstance].uiDelegate = self.viewController;
+    [GIDSignIn sharedInstance].uiDelegate = self;
     [GIDSignIn sharedInstance].delegate = self;
 
     instance = self;
@@ -88,6 +88,8 @@ static FirebaseDynamicLinks *instance;
 }
 
 - (void)signIn:(CDVInvokedUrlCommand *)command {
+    self.isSigningIn = YES;
+
     [[GIDSignIn sharedInstance] signIn];
 }
 

@@ -10,9 +10,16 @@
 - (BOOL)application:(nonnull UIApplication *)application
             openURL:(nonnull NSURL *)url
             options:(nonnull NSDictionary<NSString *, id> *)options {
-  return [[GIDSignIn sharedInstance] handleURL:url
+  if ([FirebaseDynamicLinks.instance isSigningIn]) {
+    [FirebaseDynamicLinks.instance isSigningIn:NO];
+
+    return [[GIDSignIn sharedInstance] handleURL:url
              sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                     annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  } else {
+    // call super
+    return [self identity_application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+  }
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -44,10 +51,18 @@
       return YES;
   }
 
+  if ([FirebaseDynamicLinks.instance isSigningIn]) {
+    [FirebaseDynamicLinks.instance isSigningIn:NO];
 
-  return [[GIDSignIn sharedInstance] handleURL:url
+    return [[GIDSignIn sharedInstance] handleURL:url
                              sourceApplication:sourceApplication
                                     annotation:annotation];
+  } else {
+    // call super
+    return [self application:app openURL:url
+            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
+  }
 }
 // [END openurl]
 
