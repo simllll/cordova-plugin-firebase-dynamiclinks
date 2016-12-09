@@ -1,4 +1,4 @@
-# cordova-plugin-firebase-dynamiclinks
+# cordova-plugin-firebase-dynamiclinks<br>[![NPM version][npm-version]][npm-url] [![NPM downloads][npm-downloads]][npm-url]
 > Cordova plugin for [Firebase Invites](https://firebase.google.com/docs/invites/) and [Firebase Dynamic Links](https://firebase.google.com/docs/dynamic-links/)
  
 ## Installation
@@ -32,4 +32,8 @@ window.cordova.plugins.firebase.dynamiclinks.sendInvitation({
     androidClientID: androidClientID
 });
 ```
+
+[npm-url]: https://www.npmjs.com/package/cordova-plugin-firebase-dynamiclinks
+[npm-version]: https://img.shields.io/npm/v/cordova-plugin-firebase-dynamiclinks.svg
+[npm-downloads]: https://img.shields.io/npm/dt/cordova-plugin-firebase-dynamiclinks.svg
 

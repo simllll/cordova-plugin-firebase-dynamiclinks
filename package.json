@@ -19,6 +19,7 @@
     "Invites",
     "App Invites",
     "Google App Invites",
+    "Firebase Dynamic Links",
     "ecosystem:cordova",
     "cordova-ios",
     "cordova-android"
