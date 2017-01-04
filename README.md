@@ -5,7 +5,7 @@
 
     cordova plugin add cordova-plugin-firebase-dynamiclinks --save --variable APP_DOMAIN="example.com" --variable APP_PATH="/"
 
-Variables `APP_DOMAIN` and `APP_PATH` specify [App Indexing](https://firebase.google.com/docs/app-indexing/) domain root to enhance dynamic links SEO.
+Variables `APP_DOMAIN` and `APP_PATH` specify web URL where your app will start an activity to handle the link. They also used to setup support for [App Indexing](https://firebase.google.com/docs/app-indexing/).
 
 Go to firebase console and export `google-services.json` and `GoogleService-Info.plist`. Put those files into the root of your cordova app folder.
 
