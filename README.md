@@ -5,6 +5,8 @@
 
     cordova plugin add cordova-plugin-firebase-dynamiclinks --save
 
+Go to firebase console and export `google-services.json` and `GoogleService-Info.plist`. Put those files into the root of your cordova app folder.
+
 ## Supported Platforms
 
 - iOS
