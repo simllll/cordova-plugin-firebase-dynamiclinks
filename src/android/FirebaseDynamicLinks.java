@@ -1,5 +1,6 @@
 package by.chemerisuk.cordova.firebase;
 
+import java.util.Arrays;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -204,7 +205,7 @@ public class FirebaseDynamicLinks extends CordovaPlugin implements GoogleApiClie
     if (resultCode == RESULT_OK) {
         final String[] ids = AppInviteInvitation.getInvitationIds(resultCode, intent);
         try {
-            _sendInvitationCallbackContext.success(new JSONArray(ids));
+            _sendInvitationCallbackContext.success(new JSONArray(Arrays.asList(ids)));
         } catch (Exception e) {
             _sendInvitationCallbackContext.error(e.getMessage());
         }
