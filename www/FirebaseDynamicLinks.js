@@ -22,3 +22,7 @@ exports.onDynamicLink = function(onSuccess, onError) {
 exports.convertInvitation = function(invitationId, onSuccess, onError) {
     exec(onSuccess, onError, "FirebaseDynamicLinks", "convertInvitation", [invitationId]);
 };
+
+exports.logEvent = function(name, params, success, error) {
+    exec(success, error, "FirebasePlugin", "logEvent", [name, params]);
+};
