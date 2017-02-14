@@ -3,6 +3,9 @@
 
 @import Firebase;
 @import GoogleSignIn;
+@import FirebaseInstanceID;
+@import FirebaseAnalytics;
+//@import FirebaseDynamicLinks;
 
 @interface FirebaseDynamicLinks : CDVPlugin<FIRInviteDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
 
