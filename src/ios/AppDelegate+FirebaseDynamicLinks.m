@@ -62,13 +62,13 @@
     return [[GIDSignIn sharedInstance] handleURL:url
                              sourceApplication:sourceApplication
                                     annotation:annotation];
-  } else {
+  } /*else {
     // call super
     return [self application:application
                      openURL:url
            sourceApplication:sourceApplication
                   annotation:annotation];
-  }
+  }*/
 }
 // [END openurl]
 
